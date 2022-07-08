@@ -3,28 +3,40 @@ import BlogList from "./BlogList";
 
 export default function Home() { // parent component 
     const [blogs, setBlogs] = useState(null) 
+    const [isPending, setIsPanding] = useState(true);  // new state for loading message/conditional 
 
     useEffect(() => { // passes as an argument a function 
-        fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
             .then(res => {      // response object - with it to then get the data 
                 return res.json()      // gets the data .. returns a new promise 
             }) 
             .then(data => {   // takes in as a parameter the data the first promise gets us 
                 //console.log(data); 
                 setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
+                setIsPanding(false);    // once false it won't show
             }) 
+        }, 1000)  // loading message shows and disappears after 1 second when then the data is revealed 
     }, []);  // Dependency Array - empty [] passes useEffect function once - first render 
     // A state in the array (second argument) becomes a dependency - will render useEffect function at beginning and also when a certain value changes 
 
     return(
         <div className="home">
+            { isPending && <div>Loading...</div> }  
             { blogs && <BlogList blogs={ blogs } title='All Blogs!' /> }  {/* child component */} 
             {/* create any property name to access the data to pass in as a prop - it's a prop. Can pass multiple props- string or dynamic values */} {/* {} to pass in javascript to do Conditional Templating in React */} 
         </div> 
     ) 
 } 
 
-
+// Conditional Loading Message Notes 
+// Conditional Templates 
+// Loading Message - for user to see while it gets/fetch the data from server over the internet since it takes a while 
+//      - create new state 
+//      - new conditional statement {isPending && <div>Loading...</div>} - show it's true and display 2nd part 
+//      - Only display Loading while the fetch is going on not once we have the data (the 2nd Conditional Statement, the blogs) 
+//      - add setIsPending(false); - once false, will not show loading message 
+//      - setTimeout() method - to display loading message example and then after 1 second the data is shown and loading message no longer shows (because of previous step) ** setTimeout NOT recommended for actual apps 
 
 
 
