@@ -8,14 +8,17 @@ export default function Home() { // parent component
     useEffect(() => { // passes as an argument a function 
         setTimeout(() => {
             fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
-            .then(res => {      // response object - with it to then get the data 
-                return res.json()      // gets the data .. returns a new promise 
-            }) 
-            .then(data => {   // takes in as a parameter the data the first promise gets us 
-                //console.log(data); 
-                setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
-                setIsPanding(false);    // once false it won't show
-            }) 
+                .then(res => {      // response object - with it to then get the data 
+                    return res.json()      // gets the data .. returns a new promise 
+                }) 
+                .then(data => {   // takes in as a parameter the data the first promise gets us 
+                    //console.log(data); 
+                    setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
+                    setIsPanding(false);    // once false it won't show
+                }) 
+                .catch(err => {     // catch a network error 
+                    console.log(err.message);  // displays "Failed to fetch" on console 
+                })
         }, 1000)  // loading message shows and disappears after 1 second when then the data is revealed 
     }, []);  // Dependency Array - empty [] passes useEffect function once - first render 
     // A state in the array (second argument) becomes a dependency - will render useEffect function at beginning and also when a certain value changes 
@@ -29,14 +32,13 @@ export default function Home() { // parent component
     ) 
 } 
 
-// Conditional Loading Message Notes 
-// Conditional Templates 
-// Loading Message - for user to see while it gets/fetch the data from server over the internet since it takes a while 
-//      - create new state 
-//      - new conditional statement {isPending && <div>Loading...</div>} - show it's true and display 2nd part 
-//      - Only display Loading while the fetch is going on not once we have the data (the 2nd Conditional Statement, the blogs) 
-//      - add setIsPending(false); - once false, will not show loading message 
-//      - setTimeout() method - to display loading message example and then after 1 second the data is shown and loading message no longer shows (because of previous step) ** setTimeout NOT recommended for actual apps 
+// Handling Fetch Errors Notes 
+// Fetch Errors - server errors, connection errors 
+// Add a Catch Block to let user know - catches any kind of Network Error, fires a funtion 
+//      .catch(err => {console.log(err.message)})  - run error (err) as the function parameter 
+//      Simulate - ctrl+c on terminal to end json watch connection -> displays Failed to fetch (on console) 
+//          - terminal -> npx json-server --watch data/database.json --port 8000   -> enter  - to reconnect 
+// Server Error 
 
 
 
@@ -242,3 +244,13 @@ export default function Home() { // parent component
 // {} to pass in javascript to do Conditional Templating in React 
 // && - Logical And checks if first one is true/false. If false, doesn't bother to check second. If true, checks and evaluates the next one which outputs it to the screen 
 // remove handleDelete and as a prop as well and in BlogList.js no longer needed 
+
+
+// Conditional Loading Message Notes 
+// Conditional Templates 
+// Loading Message - for user to see while it gets/fetch the data from server over the internet since it takes a while 
+//      - create new state 
+//      - new conditional statement {isPending && <div>Loading...</div>} - show it's true and display 2nd part 
+//      - Only display Loading while the fetch is going on not once we have the data (the 2nd Conditional Statement, the blogs) 
+//      - add setIsPending(false); - once false, will not show loading message 
+//      - setTimeout() method - to display loading message example and then after 1 second the data is shown and loading message no longer shows (because of previous step) ** setTimeout NOT recommended for actual apps 
