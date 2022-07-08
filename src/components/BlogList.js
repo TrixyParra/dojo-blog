@@ -9,7 +9,7 @@
 
 // destructuring without storing the props -> ({blogs, title}) -> comment out const blogs and const title stored below 
 
-export default function BlogList({ blogs, title, handleDelete }) { // receives/passes blogs/props into this component 
+export default function BlogList({ blogs, title }) { // receives/passes blogs/props into this component 
     // grabbing and storing the blogs/props in the constant 
     // const blogs = props.blogs; 
     // const title = props.title; 
@@ -25,9 +25,6 @@ export default function BlogList({ blogs, title, handleDelete }) { // receives/p
                 <div className="blog-preview" key={blog.id}>
                     <h2>{ blog.title }</h2> 
                     <p>Writen by: { blog.author }</p> 
-
-                    {/* Pass in an anonymous function */}
-                    <button onClick={() => handleDelete(blog.id)}>Delete Blog</button>
                 </div> 
             ))} 
         </div> 
@@ -44,3 +41,30 @@ export default function BlogList({ blogs, title, handleDelete }) { // receives/p
 // invoking the function here which is stored in the Home component which is going to pass the function in it 
 // that's how to pass functions into other components as props 
 // ...not a dependency 
+
+
+// removing handleDelete 
+// export default function BlogList({ blogs, title, handleDelete }) { // receives/passes blogs/props into this component 
+//     // grabbing and storing the blogs/props in the constant 
+//     // const blogs = props.blogs; 
+//     // const title = props.title; 
+
+//     //console.log(props, blogs); 
+
+//     return (
+//         <div className="blog-list">
+//             <h2>{ title }</h2> 
+
+//             {/* Cycling through the constant */} 
+//             {blogs.map((blog) => (
+//                 <div className="blog-preview" key={blog.id}>
+//                     <h2>{ blog.title }</h2> 
+//                     <p>Writen by: { blog.author }</p> 
+
+//                     {/* Pass in an anonymous function */}
+//                     <button onClick={() => handleDelete(blog.id)}>Delete Blog</button>
+//                 </div> 
+//             ))} 
+//         </div> 
+//     ) 
+// } 
