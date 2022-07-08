@@ -24,34 +24,7 @@ export default function Home() { // parent component
     ) 
 } 
 
-// Using JSON Server Notes 
-// useEffect is good to fetch data - usually from database using api endpoints 
-// JSON Server - allows to build a fake rest API just using a JSON file 
-// Each top level property (in the json file) is considered a RESOURCE -> Ex: "blogs" is only one resource 
-// it creates end points to interact with the resource to delete items, add items, edit items, get the items, etc. 
-// JSON Server Package - used to watch the file (ex: database.json) and wrap it with end points 
-//    install -> JSON Server Packagae locally OR use "npx" to run the code from the web. Both will watch the file 
-// NPX (example used) (--watch and --port is a flag) :  
-//    New Terminal (+) -> npx json-server --watch data/database.json --port 8000   -> enter 
-//    will watch the chosen file and wrap it with some API end points 
-// Resources - http://localhost:8000/blogs   - it picked up that we have a blogs resource 
-//    to send a get request to get all of the blogs, would use the above end point (fetch data with the end points) 
-// Home - http://localhost:8000 
-// EndPoints JSON provides that Will be Used: 
-//    /blogs        GET      Fetch all blogs 
-//    /blogs/{id}   GET      Fetch a single blog 
-//    /blogs        POST     Add a new blog 
-//    /blogs/{id}   DELETE   Delete a blog 
 
-// Fetching Data with useEffect Notes 
-// fetch data through usEffect Hook 
-//    remove data from blogs in useState to later fetch and update the data with setBlogs with data that we get back from fetch 
-//    fetch('____')   - a GET request that then returns a promise 
-//      .then(res => {res.json()})   - then method will fire a function once promise is resolved (once we have the data back) .. first a response object .. with it to then get the data with return {res.json()} ..which returns a new promise because it is asynchronous because it takes some time to do 
-//      .then('(_parameter_) => {setBlogs(data);})  - executes a function once the first function is complete ..takes in the data as parameter that is the data obtained from the first promise (the javascript array data from the database.json folder) .. setBlogs to update the state, the data .. takes in data to get the data 
-// {} to pass in javascript to do Conditional Templating in React 
-// && - Logical And checks id first one is true/false. If false, doesn't bother to check second. If true, checks and evaluates the next one which outputs it to the screen 
-// remove handleDelete and as a prop as well and in BlogList.js no longer needed 
 
 
 
@@ -227,3 +200,33 @@ export default function Home() { // parent component
 //         </div> 
 //     ) 
 // } 
+
+
+// Using JSON Server Notes 
+// useEffect is good to fetch data - usually from database using api endpoints 
+// JSON Server - allows to build a fake rest API just using a JSON file 
+// Each top level property (in the json file) is considered a RESOURCE -> Ex: "blogs" is only one resource 
+// it creates end points to interact with the resource to delete items, add items, edit items, get the items, etc. 
+// JSON Server Package - used to watch the file (ex: database.json) and wrap it with end points 
+//    install -> JSON Server Packagae locally OR use "npx" to run the code from the web. Both will watch the file 
+// NPX (example used) (--watch and --port is a flag) :  
+//    New Terminal (+) -> npx json-server --watch data/database.json --port 8000   -> enter 
+//    will watch the chosen file and wrap it with some API end points 
+// Resources - http://localhost:8000/blogs   - it picked up that we have a blogs resource 
+//    to send a get request to get all of the blogs, would use the above end point (fetch data with the end points) 
+// Home - http://localhost:8000 
+// EndPoints JSON provides that Will be Used: 
+//    /blogs        GET      Fetch all blogs 
+//    /blogs/{id}   GET      Fetch a single blog 
+//    /blogs        POST     Add a new blog 
+//    /blogs/{id}   DELETE   Delete a blog 
+
+// Fetching Data with useEffect Notes 
+// fetch data through usEffect Hook 
+//    remove data from blogs in useState to later fetch and update the data with setBlogs with data that we get back from fetch 
+//    fetch('____')   - a GET request that then returns a promise 
+//      .then(res => {res.json()})   - then method will fire a function once promise is resolved (once we have the data back) .. first a response object .. with it to then get the data with return {res.json()} ..which returns a new promise because it is asynchronous because it takes some time to do 
+//      .then('(_parameter_) => {setBlogs(data);})  - executes a function once the first function is complete ..takes in the data as parameter that is the data obtained from the first promise (the javascript array data from the database.json file) .. setBlogs to update the state, the data .. takes in data to get the data 
+// {} to pass in javascript to do Conditional Templating in React 
+// && - Logical And checks if first one is true/false. If false, doesn't bother to check second. If true, checks and evaluates the next one which outputs it to the screen 
+// remove handleDelete and as a prop as well and in BlogList.js no longer needed 
