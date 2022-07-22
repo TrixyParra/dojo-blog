@@ -1,6 +1,6 @@
 // Props and Reusable Components Notes 
 
-// Reusable Components - can be used repeatedly in other components without having to reapeat the logic 
+// Reusable Components - can be used repeatedly in other components without having to repeat the logic 
 // can pass data to external components in the form of props 
 
 // Props - passes data from a parent component to a child component 
@@ -33,10 +33,10 @@ export default function BlogList({ blogs, title }) { // receives/passes blogs/pr
 
 
 // Functions as Props Notes 
-// Deleting and Item 
+// Deleting an Item 
 // Pass in an anonymous function on the onClick click event handler 
 // handleDelete function is stored in the Home Component so it can interact with the data directly 
-// which is then passed through as a prop to be qual to its function 
+// which is then passed through as a prop to be equal to its function 
 // the prop is then accepted here - passing a function as props 
 // invoking the function here which is stored in the Home component which is going to pass the function in it 
 // that's how to pass functions into other components as props 

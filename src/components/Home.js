@@ -1,30 +1,13 @@
-import { useState, useEffect } from "react";  
+//import { useState, useEffect } from "react";  
 import BlogList from "./BlogList"; 
+import useFetch from "./useFetch";
 
 export default function Home() { // parent component 
-    const [blogs, setBlogs] = useState(null) 
-    const [isPending, setIsPanding] = useState(true);  // new state for loading message/conditional 
-
-    useEffect(() => { // passes as an argument a function 
-        setTimeout(() => {
-            fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
-                .then(res => {      // response object - with it to then get the data 
-                    return res.json()      // gets the data .. returns a new promise 
-                }) 
-                .then(data => {   // takes in as a parameter the data the first promise gets us 
-                    //console.log(data); 
-                    setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
-                    setIsPanding(false);    // once false it won't show
-                }) 
-                .catch(err => {     // catch a network error 
-                    console.log(err.message);  // displays "Failed to fetch" on console 
-                })
-        }, 1000)  // loading message shows and disappears after 1 second when then the data is revealed 
-    }, []);  // Dependency Array - empty [] passes useEffect function once - first render 
-    // A state in the array (second argument) becomes a dependency - will render useEffect function at beginning and also when a certain value changes 
+    const { data: blogs, isPending, error } = useFetch('http://localhost:8000/blogs'); // data: blogs - grab the data but call it blogs in this context (line 12) or swith { blogs } to { data } in line 12 
 
     return(
         <div className="home">
+            { error && <div>{ error }</div> }  {/* will display the error if any on site */}
             { isPending && <div>Loading...</div> }  
             { blogs && <BlogList blogs={ blogs } title='All Blogs!' /> }  {/* child component */} 
             {/* create any property name to access the data to pass in as a prop - it's a prop. Can pass multiple props- string or dynamic values */} {/* {} to pass in javascript to do Conditional Templating in React */} 
@@ -32,13 +15,6 @@ export default function Home() { // parent component
     ) 
 } 
 
-// Handling Fetch Errors Notes 
-// Fetch Errors - server errors, connection errors 
-// Add a Catch Block to let user know - catches any kind of Network Error, fires a funtion 
-//      .catch(err => {console.log(err.message)})  - run error (err) as the function parameter 
-//      Simulate - ctrl+c on terminal to end json watch connection -> displays Failed to fetch (on console) 
-//          - terminal -> npx json-server --watch data/database.json --port 8000   -> enter  - to reconnect 
-// Server Error 
 
 
 
@@ -241,6 +217,7 @@ export default function Home() { // parent component
 //    fetch('____')   - a GET request that then returns a promise 
 //      .then(res => {res.json()})   - then method will fire a function once promise is resolved (once we have the data back) .. first a response object .. with it to then get the data with return {res.json()} ..which returns a new promise because it is asynchronous because it takes some time to do 
 //      .then('(_parameter_) => {setBlogs(data);})  - executes a function once the first function is complete ..takes in the data as parameter that is the data obtained from the first promise (the javascript array data from the database.json file) .. setBlogs to update the state, the data .. takes in data to get the data 
+
 // {} to pass in javascript to do Conditional Templating in React 
 // && - Logical And checks if first one is true/false. If false, doesn't bother to check second. If true, checks and evaluates the next one which outputs it to the screen 
 // remove handleDelete and as a prop as well and in BlogList.js no longer needed 
@@ -254,3 +231,91 @@ export default function Home() { // parent component
 //      - Only display Loading while the fetch is going on not once we have the data (the 2nd Conditional Statement, the blogs) 
 //      - add setIsPending(false); - once false, will not show loading message 
 //      - setTimeout() method - to display loading message example and then after 1 second the data is shown and loading message no longer shows (because of previous step) ** setTimeout NOT recommended for actual apps 
+
+// export default function Home() { // parent component 
+//     const [blogs, setBlogs] = useState(null) 
+//     const [isPending, setIsPanding] = useState(true);  // new state for loading message/conditional 
+
+//     useEffect(() => { // passes as an argument a function 
+//         setTimeout(() => {
+//             fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
+//                 .then(res => {      // response object - with it to then get the data 
+//                     return res.json()      // gets the data .. returns a new promise 
+//                 }) 
+//                 .then(data => {   // takes in as a parameter the data the first promise gets us 
+//                     //console.log(data); 
+//                     setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
+//                     setIsPanding(false);    // once false it won't show
+//                 }) 
+//         }, 1000)  // loading message shows and disappears after 1 second when then the data is revealed 
+//     }, []);  // Dependency Array - empty [] passes useEffect function once - first render 
+//     // A state in the array (second argument) becomes a dependency - will render useEffect function at beginning and also when a certain value changes 
+
+//     return(
+//         <div className="home">
+//             { isPending && <div>Loading...</div> }  
+//             { blogs && <BlogList blogs={ blogs } title='All Blogs!' /> }  {/* child component */} 
+//             {/* create any property name to access the data to pass in as a prop - it's a prop. Can pass multiple props- string or dynamic values */} {/* {} to pass in javascript to do Conditional Templating in React */} 
+//         </div> 
+//     ) 
+// } 
+
+
+// Handling Fetch Errors Notes 
+// Fetch Errors - server errors, connection errors 
+// Add a Catch Block to let user know - catches any kind of Network Error, fires a funtion 
+//      .catch(err => {console.log(err.message)})  - run error (err) as the function parameter 
+//      Simulate - ctrl+c on terminal to end json watch connection -> displays Failed to fetch (on console) 
+//          - terminal -> npx json-server --watch data/database.json --port 8000   -> enter  - to reconnect 
+// Server Errors - endpoint doesn't exist or if the request is denied 
+// catch block won't catch those errors 
+// need to check the response (res) object 
+// console.log(res) - check and click to expand - shows ok:true meaning the fetch was ok and data was returned. Faulty endpoint would return/show false. 
+// if(!res.ok) { throw Error('_error message_')} - ok property is used to check if true or false, throw an error message 
+// catch method will catch the error from the response if there is an issue with the fetch (ex: a wrong endpoint/fetch link) 
+// Store error in a state to output to the browser - const [error, setError] = useSate(null); 
+// in catch method -> setError(err.message);  // will catch any error (network/server) message to display 
+// Conditional rendering to output error if any - { error && <div>{ error }</div> } - woll display the error, ifa any, on the html site 
+// setIsPending(false); in catch method - so it won't show loading message at the same time 
+// setError(null); in fetch statement in returned data - if there is no error set to null because data is returned 
+
+// export default function Home() { // parent component 
+//     const [blogs, setBlogs] = useState(null) 
+//     const [isPending, setIsPanding] = useState(true);  // new state for loading message/conditional 
+//     const [error, setError] = useState(null); 
+
+//     useEffect(() => { // passes as an argument a function 
+//         setTimeout(() => {
+//             fetch('http://localhost:8000/blogs')  // GET request .. then returns a promise .. a promise 
+//                 .then(res => {      // response object - with it to then get the data 
+//                     // console.log(res); 
+//                     if (!res.ok) {
+//                         throw Error('could not fetch the data for that resource') 
+//                     } 
+//                     return res.json()      // gets the data .. returns a new promise 
+//                 }) 
+//                 .then(data => {   // takes in as a parameter the data the first promise gets us 
+//                     //console.log(data); 
+//                     setBlogs(data);     // setBlogs to update the state, the data .. takes in data to get the data 
+//                     setIsPanding(false);    // once false it won't show 
+//                     setError(null);     // set to null if there is no error 
+//                 }) 
+//                 .catch(err => {     // catch a network error 
+//                     //console.log(err.message);  // displays "Failed to fetch" on console 
+//                     // displays could not fetch the data for that resource - catches the res error message from above 
+//                     setIsPanding(false); 
+//                     setError(err.message);  // will catch any error message to display 
+//                 })
+//         }, 1000)  // loading message shows and disappears after 1 second when then the data is revealed 
+//     }, []);  // Dependency Array - empty [] passes useEffect function once - first render 
+//     // A state in the array (second argument) becomes a dependency - will render useEffect function at beginning and also when a certain value changes 
+
+//     return(
+//         <div className="home">
+//             { error && <div>{ error }</div> }  {/* will display the error if any on site */}
+//             { isPending && <div>Loading...</div> }  
+//             { blogs && <BlogList blogs={ blogs } title='All Blogs!' /> }  {/* child component */} 
+//             {/* create any property name to access the data to pass in as a prop - it's a prop. Can pass multiple props- string or dynamic values */} {/* {} to pass in javascript to do Conditional Templating in React */} 
+//         </div> 
+//     ) 
+// } 
